@@ -36,6 +36,10 @@ contract CrowdFunding{
         admin=msg.sender;
     }
   
+    // Declare events
+    event ContributeEvent(address _sender, uint _value);
+    event CreateRequest(string _description,address _recipient, uint _value);
+    event Makepayment(address _sender, uint _value);
 
     // contribute allows users to contribute the funding
     function contribute() public payable {
@@ -52,6 +56,7 @@ contract CrowdFunding{
         contributors[msg.sender]+=msg.value;
         // Add the contribution to totalRaisedAmount
         totalRaisedAmount+=msg.value;
+        emit ContributeEvent(msg.sender, msg.value);
     }
 
     // contribute function is usually applies from frontend and they just send ether directly to contract address
@@ -66,7 +71,7 @@ contract CrowdFunding{
     }
 
     // getRefund refunds the money back to contributors if deadline has passed and goal has not reached.
-    function getRefund()public     {
+    function getRefund() public     {
         require(block.timestamp>deadline && totalRaisedAmount<goal,"Cannot refund");
         require(contributors[msg.sender]>0,"Already refunded");
 
@@ -79,7 +84,7 @@ contract CrowdFunding{
         
     }
 
-    // onlyAdmin requires only admin is allowed
+    // onlyAdmin requires user to be admin
     modifier onlyAdmin() {
         require(msg.sender==admin,"Only admin is allowed");
         _;
@@ -97,5 +102,39 @@ contract CrowdFunding{
         newRequest.value=_value;
         newRequest.completed=false;
         newRequest.noOfVoters=0;
+
+        emit CreateRequest(_description, _recipient, _value);
     }
+
+    // onlyContributor requires user to be a contributor
+    modifier onlyContributor() {
+        require(contributors[msg.sender]>0,"Only contributor is allowed");
+        _;
+    }
+    // voteRequest allows the contributor to vote for the request
+    function voteRequest(uint _requestNo)public onlyContributor{
+        // Get the request
+        Request storage thisRequest=requests[_requestNo];
+        require(thisRequest.voters[msg.sender]==false,"You have already voted");
+        thisRequest.voters[msg.sender]==true;
+        thisRequest.noOfVoters++;
+
+    }
+
+    function makePayment(uint _requestNo) public onlyAdmin{
+       // Make sure totalRaisedAmount is greater than goal
+        require(totalRaisedAmount>=goal,"The goal has not met");
+        Request storage thisRequest=requests[_requestNo];
+        // Make sure the request has not been completed
+        require(thisRequest.completed==false,"The reuested has been completed!");
+        // Make sure at least more than 50 % of contributers voted
+        require(thisRequest.noOfVoters>noOfContributors/2,"At least more than 50 % of contributers should vote to proceed payment");
+        // Transfer the value to recipient
+        thisRequest.recipient.transfer(thisRequest.value);
+        // Complete the request
+        thisRequest.completed=true;
+
+       emit Makepayment(thisRequest.recipient, thisRequest.value);
+    }
+
 }

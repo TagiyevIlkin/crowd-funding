@@ -22,6 +22,69 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					}
+				],
+				"name": "ContributeEvent",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "_description",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_recipient",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					}
+				],
+				"name": "CreateRequest",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					}
+				],
+				"name": "Makepayment",
+				"type": "event"
+			},
+			{
 				"inputs": [],
 				"name": "admin",
 				"outputs": [
@@ -130,6 +193,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_requestNo",
+						"type": "uint256"
+					}
+				],
+				"name": "makePayment",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "minimumContribution",
 				"outputs": [
@@ -221,6 +297,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_requestNo",
+						"type": "uint256"
+					}
+				],
+				"name": "voteRequest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"stateMutability": "payable",
 				"type": "receive"
 			}
@@ -253,11 +342,11 @@
 	},
 	"sources": {
 		"contracts/crowdfunding.sol": {
-			"keccak256": "0xbf5b1f2ffb452beedd9721ff192d66861e085def643616374da0833da2c30ef4",
+			"keccak256": "0x539c137d07296d33e5ab70365e4f44f0f3192644ab230f39f0d66393252fcfbf",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://872426794dd404b0759e91c6fe50e1863f4c103918e2d7b431d196fa83f14f52",
-				"dweb:/ipfs/QmX6S898EZcBrg5bbsQ8M2pbk7c76GV8iY8biXV2rix9F8"
+				"bzz-raw://26eec41bb9fad525ede54dc0dfc32c5bbbb31ccf1fa40019a106e55a0957b49f",
+				"dweb:/ipfs/QmTyvcKr8aUbayHA7Xr4dzmmQZ4TEUPy78uQTVAMotoeVb"
 			]
 		}
 	},
